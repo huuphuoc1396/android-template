@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Template</string>
+    <string name="ok">OK</string>
+    <string name="task_list_title">Tasks</string>
+    <string name="task_detail_title">Task Detail</string>
+    <string name="error_title">Error</string>
+    <string name="unknown_error_message">Sorry, an error occurred. Please try again.</string>
+</resources>
