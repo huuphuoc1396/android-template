@@ -8,11 +8,11 @@ import com.android.template.domain.usecases.tasks.GetTaskUseCase
 import com.android.template.features.taskdetail.models.TaskDetailDestination
 import com.android.template.features.taskdetail.models.TaskDetailUiState
 import com.android.template.providers.dispatchers.DispatcherProvider
+import com.android.template.utils.mockkSavedStateHandle
+import com.android.template.utils.unmockkSavedStateHandle
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -39,18 +39,18 @@ internal class TaskDetailViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        mockkStatic("androidx.navigation.SavedStateHandleKt")
+        mockkSavedStateHandle()
         every { dispatcherProvider.io } returns testDispatcher
     }
 
     @After
     fun tearDown() {
         Dispatchers.resetMain()
-        unmockkStatic("androidx.navigation.SavedStateHandleKt")
+        unmockkSavedStateHandle()
     }
 
     @Test
-    fun `get task success`() = runTest {
+    fun `getTask is success`() = runTest {
         // Given
         val task = Task(id = "1", content = "Task 1")
         every { getTaskUseCase("1") } returns flowOf(task)
@@ -59,11 +59,7 @@ internal class TaskDetailViewModelTest {
         } returns TaskDetailDestination(taskId = "1")
 
         // When
-        taskDetailViewModel = TaskDetailViewModel(
-            savedStateHandle = savedStateHandle,
-            dispatcherProvider = dispatcherProvider,
-            getTaskUseCase = getTaskUseCase,
-        )
+        taskDetailViewModel = createTaskDetailViewModel()
         advanceUntilIdle()
 
         // Then
@@ -73,7 +69,7 @@ internal class TaskDetailViewModelTest {
     }
 
     @Test
-    fun `get task fail`() = runTest {
+    fun `getTask is fail`() = runTest {
         // Given
         val throwable = Throwable("Error")
         every { getTaskUseCase("1") } returns flow { throw throwable }
@@ -82,11 +78,7 @@ internal class TaskDetailViewModelTest {
         } returns TaskDetailDestination(taskId = "1")
 
         // When
-        taskDetailViewModel = TaskDetailViewModel(
-            savedStateHandle = savedStateHandle,
-            dispatcherProvider = dispatcherProvider,
-            getTaskUseCase = getTaskUseCase,
-        )
+        taskDetailViewModel = createTaskDetailViewModel()
         advanceUntilIdle()
 
         // Then
@@ -94,4 +86,10 @@ internal class TaskDetailViewModelTest {
             expectMostRecentItem().message shouldBe "Error"
         }
     }
+
+    private fun createTaskDetailViewModel() = TaskDetailViewModel(
+        savedStateHandle = savedStateHandle,
+        dispatcherProvider = dispatcherProvider,
+        getTaskUseCase = getTaskUseCase,
+    )
 }

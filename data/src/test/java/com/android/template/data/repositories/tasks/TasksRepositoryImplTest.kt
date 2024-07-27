@@ -1,9 +1,9 @@
-package com.android.template.data.repositories
+package com.android.template.data.repositories.tasks
 
 import app.cash.turbine.test
 import com.android.template.data.remote.models.responses.tasks.TaskResponse
 import com.android.template.data.remote.services.TasksService
-import com.android.template.data.repositories.mappers.tasks.toTask
+import com.android.template.data.repositories.tasks.mappers.toTask
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -16,7 +16,7 @@ internal class TasksRepositoryImplTest {
     private val repository = TasksRepositoryImpl(tasksService)
 
     @Test
-    fun `get task list`() = runTest {
+    fun `getTaskList returns tasks`() = runTest {
         // Given
         val mockResponses = listOf(TaskResponse())
         val expected = mockResponses.map { it.toTask() }
@@ -32,7 +32,7 @@ internal class TasksRepositoryImplTest {
     }
 
     @Test
-    fun `get task`() = runTest {
+    fun `getTask returns task`() = runTest {
         // Given
         val id = "id"
         val mockResponse = TaskResponse()
@@ -49,16 +49,16 @@ internal class TasksRepositoryImplTest {
     }
 
     @Test
-    fun `create task`() = runTest {
+    fun `createTask returns task`() = runTest {
         // Given
         val response = TaskResponse()
-        val model = response.toTask()
+        val task = response.toTask()
         coEvery { tasksService.createTask() } returns response
 
         // When
-        val result = repository.createTask(model)
+        val result = repository.createTask(task)
 
         // Then
-        result shouldBe model
+        result shouldBe task
     }
 }
