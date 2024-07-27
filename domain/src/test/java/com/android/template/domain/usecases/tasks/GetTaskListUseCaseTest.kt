@@ -1,9 +1,8 @@
-package com.android.template.domain.usecases
+package com.android.template.domain.usecases.tasks
 
 import app.cash.turbine.test
 import com.android.template.domain.models.tasks.Task
 import com.android.template.domain.repositories.tasks.TasksRepository
-import com.android.template.domain.usecases.tasks.GetTaskListUseCase
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
@@ -18,7 +17,7 @@ internal class GetTaskListUseCaseTest {
     private val useCase = GetTaskListUseCase(tasksRepository)
 
     @Test
-    fun `get task list`() = runTest {
+    fun `getTaskList returns tasks`() = runTest {
         // Given
         val taskList = mockk<List<Task>>()
         every { tasksRepository.getTaskList() } returns flowOf(taskList)

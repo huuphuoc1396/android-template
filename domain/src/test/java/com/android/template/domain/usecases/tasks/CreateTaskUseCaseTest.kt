@@ -1,8 +1,7 @@
-package com.android.template.domain.usecases
+package com.android.template.domain.usecases.tasks
 
 import com.android.template.domain.models.tasks.Task
 import com.android.template.domain.repositories.tasks.TasksRepository
-import com.android.template.domain.usecases.tasks.CreateTaskUseCase
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -15,7 +14,7 @@ internal class CreateTaskUseCaseTest {
     private val useCase = CreateTaskUseCase(tasksRepository)
 
     @Test
-    fun `create task`() = runTest {
+    fun `createTask returns task`() = runTest {
         // Given
         val task = mockk<Task>()
         coEvery { tasksRepository.createTask(task) } returns task

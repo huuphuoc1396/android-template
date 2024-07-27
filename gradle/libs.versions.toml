@@ -19,6 +19,7 @@ hiltNavigationCompose = "1.2.0"
 room = "2.6.1"
 retrofit = "2.9.0"
 gson = "2.10.1"
+securityCryptoDatastore = "1.0.0"
 mockk = "1.12.1"
 kotest = "5.0.0"
 turbine = "1.1.0"
@@ -61,6 +62,9 @@ retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-
 okhttp3-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
 
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+security-crypto-datastore = { group = "io.github.osipxd", name = "security-crypto-datastore", version.ref = "securityCryptoDatastore" }
+security-crypto-datastore-preferences = { group = "io.github.osipxd", name = "security-crypto-datastore-preferences", version.ref = "securityCryptoDatastore" }
 
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotest = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }

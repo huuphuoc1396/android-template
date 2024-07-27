@@ -13,12 +13,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -82,6 +82,7 @@ abstract class UiStateViewModel<UiState, Event>(
             try {
                 block()
             } catch (e: Throwable) {
+                Timber.e(e)
                 onError(e)
             }
             if (hasLoading) hideLoading()
@@ -95,9 +96,14 @@ abstract class UiStateViewModel<UiState, Event>(
         block: suspend (T) -> Unit,
     ): Job = flowOn(context)
         .onStart { if (hasLoading) showLoading() }
-        .catch { e -> onError(e) }
-        .onEach(block)
-        .onEach { if (hasLoading) hideLoading() }
-        .onCompletion { if (hasLoading) hideLoading() }
+        .catch { e ->
+            Timber.e(e)
+            onError(e)
+            if (hasLoading) hideLoading()
+        }
+        .onEach {
+            block(it)
+            if (hasLoading) hideLoading()
+        }
         .launchIn(viewModelScope)
 }
