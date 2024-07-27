@@ -1,9 +1,8 @@
-package com.android.template.domain.usecases
+package com.android.template.domain.usecases.tasks
 
 import app.cash.turbine.test
 import com.android.template.domain.models.tasks.Task
 import com.android.template.domain.repositories.tasks.TasksRepository
-import com.android.template.domain.usecases.tasks.GetTaskUseCase
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
@@ -17,9 +16,9 @@ internal class GetTaskUseCaseTest {
     private val useCase = GetTaskUseCase(tasksRepository)
 
     @Test
-    fun `get task`() = runTest {
+    fun `getTask returns task`() = runTest {
         // Given
-        val id = "id"
+        val id = "1"
         val task = mockk<Task>()
         every { tasksRepository.getTask(id) } returns flowOf(task)
 
@@ -27,6 +26,8 @@ internal class GetTaskUseCaseTest {
         val result = useCase(id)
 
         // Then
-        result.test { expectMostRecentItem() shouldBe task }
+        result.test {
+            expectMostRecentItem() shouldBe task
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.android.template.data.repositories.di
 
-import com.android.template.data.repositories.TasksRepositoryImpl
+import com.android.template.data.repositories.preferences.PreferencesRepositoryImpl
+import com.android.template.data.repositories.tasks.TasksRepositoryImpl
+import com.android.template.domain.repositories.preferences.PreferencesRepository
 import com.android.template.domain.repositories.tasks.TasksRepository
 import dagger.Binds
 import dagger.Module
@@ -13,4 +15,7 @@ internal interface RepositoriesModule {
 
     @Binds
     fun bindTasksRepository(impl: TasksRepositoryImpl): TasksRepository
+
+    @Binds
+    fun providePreferencesRepository(impl: PreferencesRepositoryImpl): PreferencesRepository
 }

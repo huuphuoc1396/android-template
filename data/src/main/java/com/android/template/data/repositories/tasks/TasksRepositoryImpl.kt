@@ -1,7 +1,8 @@
-package com.android.template.data.repositories
+package com.android.template.data.repositories.tasks
 
 import com.android.template.data.remote.services.TasksService
-import com.android.template.data.repositories.mappers.tasks.toTask
+import com.android.template.data.repositories.tasks.mappers.toTask
+import com.android.template.data.repositories.tasks.mappers.toTaskList
 import com.android.template.domain.models.tasks.Task
 import com.android.template.domain.repositories.tasks.TasksRepository
 import kotlinx.coroutines.flow.Flow
@@ -14,15 +15,17 @@ internal class TasksRepositoryImpl @Inject constructor(
 
     override fun getTaskList(): Flow<List<Task>> {
         return flow {
-            val modelList = tasksService.getTaskList().map { it.toTask() }
-            emit(modelList)
+            val taskResponses = tasksService.getTaskList()
+            val taskList = taskResponses.toTaskList()
+            emit(taskList)
         }
     }
 
     override fun getTask(id: String): Flow<Task> {
         return flow {
-            val model = tasksService.getTask(id).toTask()
-            emit(model)
+            val taskResponse = tasksService.getTask(id)
+            val task = taskResponse.toTask()
+            emit(task)
         }
     }
 
