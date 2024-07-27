@@ -1,7 +1,7 @@
-package com.android.template.data.repositories
+package com.android.template.data.repositories.tasks
 
 import com.android.template.data.remote.services.TasksService
-import com.android.template.data.repositories.mappers.tasks.toTask
+import com.android.template.data.repositories.tasks.mappers.toTask
 import com.android.template.domain.models.tasks.Task
 import com.android.template.domain.repositories.tasks.TasksRepository
 import kotlinx.coroutines.flow.Flow

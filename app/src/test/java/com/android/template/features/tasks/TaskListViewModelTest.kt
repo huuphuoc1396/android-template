@@ -3,8 +3,11 @@ package com.android.template.features.tasks
 import app.cash.turbine.test
 import com.android.template.compose.uistate.models.ErrorState
 import com.android.template.domain.models.tasks.Task
+import com.android.template.domain.usecases.preferences.IsFirstRunUseCase
+import com.android.template.domain.usecases.preferences.SetFirstRunUseCase
 import com.android.template.domain.usecases.tasks.CreateTaskUseCase
 import com.android.template.domain.usecases.tasks.GetTaskListUseCase
+import com.android.template.features.tasks.models.TaskListEvent
 import com.android.template.features.tasks.models.TaskListUiState
 import com.android.template.providers.dispatchers.DispatcherProvider
 import io.kotest.matchers.shouldBe
@@ -32,6 +35,8 @@ internal class TaskListViewModelTest {
     private val dispatcherProvider: DispatcherProvider = mockk()
     private val createTaskUseCase: CreateTaskUseCase = mockk()
     private val getTaskListUseCase: GetTaskListUseCase = mockk()
+    private val isFirstRunUseCase: IsFirstRunUseCase = mockk()
+    private val setFirstRunUseCase: SetFirstRunUseCase = mockk()
 
     private lateinit var taskListViewModel: TaskListViewModel
 
@@ -47,17 +52,12 @@ internal class TaskListViewModelTest {
     }
 
     @Test
-    fun `get task list success`() = runTest {
+    fun `getTaskList is success`() = runTest {
         // Given
-        val tasks = listOf(Task(id = "1", content = "Task 1"), Task(id = "2", content = "Task 2"))
-        every { getTaskListUseCase() } returns flowOf(tasks)
+        val tasks = giveTaskList()
 
         // When
-        taskListViewModel = TaskListViewModel(
-            dispatcherProvider = dispatcherProvider,
-            createTaskUseCase = createTaskUseCase,
-            getTaskListUseCase = getTaskListUseCase,
-        )
+        taskListViewModel = createTaskListViewModel()
         advanceUntilIdle()
 
         // Then
@@ -67,17 +67,13 @@ internal class TaskListViewModelTest {
     }
 
     @Test
-    fun `get task list fail`() = runTest {
+    fun `getTaskList is fail`() = runTest {
         // Given
         val error = RuntimeException("Error")
         every { getTaskListUseCase() } returns flow { throw error }
 
         // When
-        taskListViewModel = TaskListViewModel(
-            dispatcherProvider = dispatcherProvider,
-            createTaskUseCase = createTaskUseCase,
-            getTaskListUseCase = getTaskListUseCase,
-        )
+        taskListViewModel = createTaskListViewModel()
         advanceUntilIdle()
 
         // Then
@@ -87,19 +83,15 @@ internal class TaskListViewModelTest {
     }
 
     @Test
-    fun `create task success`() = runTest {
+    fun `createTask is success`() = runTest {
         // Given
-        val tasks = listOf(Task(id = "1", content = "Task 1"), Task(id = "2", content = "Task 2"))
+        val tasks = giveTaskList()
+
         val newTask = Task()
-        every { getTaskListUseCase() } returns flowOf(tasks)
         coEvery { createTaskUseCase(newTask) } returns newTask
 
         // When
-        taskListViewModel = TaskListViewModel(
-            dispatcherProvider = dispatcherProvider,
-            createTaskUseCase = createTaskUseCase,
-            getTaskListUseCase = getTaskListUseCase,
-        )
+        taskListViewModel = createTaskListViewModel()
         advanceUntilIdle()
 
         taskListViewModel.createTask()
@@ -112,20 +104,16 @@ internal class TaskListViewModelTest {
     }
 
     @Test
-    fun `create task fail`() = runTest {
+    fun `createTask is fail`() = runTest {
         // Given
-        val tasks = listOf(Task(id = "1", content = "Task 1"), Task(id = "2", content = "Task 2"))
+        val tasks = giveTaskList()
+
         val error = RuntimeException("Error")
         val newTask = Task()
-        every { getTaskListUseCase() } returns flowOf(tasks)
         coEvery { createTaskUseCase(newTask) } throws error
 
         // When
-        taskListViewModel = TaskListViewModel(
-            dispatcherProvider = dispatcherProvider,
-            createTaskUseCase = createTaskUseCase,
-            getTaskListUseCase = getTaskListUseCase,
-        )
+        taskListViewModel = createTaskListViewModel()
         advanceUntilIdle()
 
         taskListViewModel.createTask()
@@ -139,4 +127,73 @@ internal class TaskListViewModelTest {
             expectMostRecentItem() shouldBe ErrorState(message = "Error")
         }
     }
+
+    @Test
+    fun `isFirstRun is true`() = runTest {
+        // Given
+        giveTaskList()
+
+        val expected = true
+        every { isFirstRunUseCase() } returns flowOf(expected)
+        coEvery { setFirstRunUseCase(false) } returns Unit
+
+        // When
+        taskListViewModel = createTaskListViewModel()
+        advanceUntilIdle()
+
+        // Then
+        taskListViewModel.singleEvent.test {
+            expectMostRecentItem() shouldBe TaskListEvent.FirstRun
+        }
+    }
+
+    @Test
+    fun `isFirstRun is false`() = runTest {
+        // Given
+        giveTaskList()
+
+        val expected = false
+        every { isFirstRunUseCase() } returns flowOf(expected)
+
+        // When
+        taskListViewModel = createTaskListViewModel()
+        advanceUntilIdle()
+
+        // Then
+        taskListViewModel.singleEvent.test {
+            expectNoEvents()
+        }
+    }
+
+    @Test
+    fun `openTaskDetail calls`() = runTest {
+        // Given
+        val tasks = giveTaskList()
+
+        // When
+        taskListViewModel = createTaskListViewModel()
+        advanceUntilIdle()
+
+        taskListViewModel.openTaskDetail(tasks.first())
+        advanceUntilIdle()
+
+        // Then
+        taskListViewModel.singleEvent.test {
+            expectMostRecentItem() shouldBe TaskListEvent.OpenTaskDetail(taskId = tasks.first().id)
+        }
+    }
+
+    private fun giveTaskList(): List<Task> {
+        val tasks = listOf(Task(id = "1", content = "Task 1"), Task(id = "2", content = "Task 2"))
+        every { getTaskListUseCase() } returns flowOf(tasks)
+        return tasks
+    }
+
+    private fun createTaskListViewModel() = TaskListViewModel(
+        dispatcherProvider = dispatcherProvider,
+        createTaskUseCase = createTaskUseCase,
+        getTaskListUseCase = getTaskListUseCase,
+        setFirstRunUseCase = setFirstRunUseCase,
+        isFirstRunUseCase = isFirstRunUseCase,
+    )
 }
