@@ -5,4 +5,5 @@
     <string name="task_detail_title">Task Detail</string>
     <string name="error_title">Error</string>
     <string name="unknown_error_message">Sorry, an error occurred. Please try again.</string>
+    <string name="first_run_message">Welcome to the app!</string>
 </resources>

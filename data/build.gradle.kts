@@ -67,6 +67,9 @@ dependencies {
     implementation(libs.okhttp3.logging)
     implementation(libs.gson)
 
+    implementation(libs.security.crypto.datastore)
+    implementation(libs.security.crypto.datastore.preferences)
+
     implementation(libs.timber)
 
     testImplementation(libs.junit)

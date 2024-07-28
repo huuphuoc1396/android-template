@@ -15,8 +15,8 @@ internal fun TaskList(
 ) {
     LazyColumn(modifier = modifier) {
         items(tasks.size, key = { index -> tasks[index].id }) { index ->
-            val model = tasks[index]
-            TaskItem(task = model, onClick = { onClick(model) })
+            val task = tasks[index]
+            TaskItem(task = task, onClick = { onClick(task) })
             HorizontalDivider()
         }
     }
