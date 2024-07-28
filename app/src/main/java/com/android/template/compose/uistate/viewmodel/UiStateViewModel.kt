@@ -51,8 +51,8 @@ abstract class UiStateViewModel<UiState, Event>(
         launch { mutexUiState.withLock { _uiState.emit(_uiState.value.update()) } }
     }
 
-    open fun showError(error: ErrorState) {
-        launch { mutexError.withLock { _error.emit(error) } }
+    open fun showError(throwable: Throwable) {
+        launch { mutexError.withLock { _error.emit(ErrorState(throwable)) } }
     }
 
     open fun hideError() {

@@ -1,6 +1,7 @@
 package com.android.template.data.remote.di
 
 import com.android.template.data.BuildConfig
+import com.android.template.data.remote.adapters.errors.ErrorHandlingCallAdapterFactory
 import com.android.template.data.remote.interceptors.HeaderInterceptor
 import com.android.template.data.remote.services.TasksService
 import dagger.Module
@@ -43,6 +44,7 @@ internal class RemoteModule {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(ErrorHandlingCallAdapterFactory.create())
             .client(okHttpClient)
             .build()
     }

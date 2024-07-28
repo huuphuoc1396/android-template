@@ -5,7 +5,6 @@ import androidx.navigation.toRoute
 import com.android.template.compose.uistate.models.EmptyEvent
 import com.android.template.compose.uistate.viewmodel.UiStateViewModel
 import com.android.template.domain.usecases.tasks.GetTaskUseCase
-import com.android.template.extenstions.errors.toErrorState
 import com.android.template.features.taskdetail.models.TaskDetailDestination
 import com.android.template.features.taskdetail.models.TaskDetailUiState
 import com.android.template.providers.dispatchers.DispatcherProvider
@@ -28,7 +27,7 @@ internal class TaskDetailViewModel @Inject constructor(
         getTaskUseCase(taskId).collectSafe(
             context = dispatcherProvider.io,
             hasLoading = true,
-            onError = { throwable -> showError(throwable.toErrorState()) }
+            onError = ::showError,
         ) { task ->
             updateUiState { copy(task = task) }
         }
