@@ -1,49 +1,55 @@
-# Android Clean Architecture Template
+# Android Template
 
-This Android Template is designed to streamline the development of Android applications using Clean Architecture principles. It provides a robust foundation for building scalable, maintainable, and testable applications by separating concerns into distinct layers.
+Welcome to the Android Template repository! This project is designed to help you kickstart your Android development with best practices and the latest technologies.
 
-## Features
+## Key Features
 
-- **Clean Architecture Layers**: Organized into `Data`, `Domain`, and `Presentation` layers to ensure separation of concerns.
-- **Kotlin and Java Support**: Utilize the power of Kotlin along with Java compatibility.
-- **Gradle Configuration**: Centralized dependency management with `gradle/libs.versions.toml`.
-- **Jetpack Compose**: Modern toolkit for building native UIs.
-- **Hilt for Dependency Injection**: Simplify dependency injection with Hilt, configured across modules.
-- **MVVM Pattern**: Leverage the Model-View-ViewModel pattern in the Presentation layer for a reactive UI.
-- **Coroutines & Flow**: Asynchronous programming with Kotlin Coroutines and Flow.
-- **Retrofit & Room**: Network communication with Retrofit and local database management with Room.
-- **Unit & Integration Tests**: Pre-configured setups for writing unit and integration tests.
+- **Clean Architecture**: Ensures a robust, scalable, and testable codebase.
+- **MVVM**: Facilitates separation of concerns and promotes a cleaner architecture.
+- **Jetpack Compose**: Modern toolkit for building native UI with less code.
+- **Navigation Component**: Simplifies navigation and passing data between destinations.
+- **Hilt**: Reduces boilerplate for dependency injection.
+- **Encrypted DataStore**: Secure storage for key-value pairs.
+- **Coroutines and Flow**: Simplifies asynchronous programming and stream handling.
+- **Retrofit**: Type-safe HTTP client.
+- **Unit Testing**: Reliable and bug-free code using JUnit and MockK.
 
 ## Getting Started
 
-1. **Clone the Repository**: Clone this template to start your project.
-```
-git clone https://github.com/huuphuoc1396/android-template.git
-```
-2. **Open in Android Studio Koala | 2024.1.1**: Ensure compatibility and access to the latest features.
-3. **Configure Dependencies**: Check `gradle/libs.versions.toml` and module-level `build.gradle.kts` files to adjust dependencies as needed.
-4. **Build the Project**: Compile the project to verify setup and dependencies.
+### Prerequisites
 
-## Project Structure
+- **Android Studio**
+- **JDK 11**
 
-- `app/`: Entry point of the application, containing the Presentation layer.
-- `domain/`: Business logic and use cases of the application.
-- `data/`: Data handling layer, including network and database operations.
-- `gradle/`: Contains Gradle wrapper and configuration files.
+### Installation
 
-## Key Dependencies
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/huuphuoc1396/android-template.git
+   ```
+2. **Open the project** in Android Studio.
+3. **Build the project**.
 
-- **Jetpack Compose**: For building modern, native UIs efficiently with Kotlin.
-- **Hilt**: Dependency injection framework.
-- **Retrofit**: HTTP client for Android.
-- **Room**: Abstraction layer over SQLite.
-- **Kotlin Coroutines**: For managing background threads.
-- **Flow**: Handling asynchronous data streams.
+### Project Structure
 
-## Contributing
+- **presentation** (`app`): UI components and ViewModels.
+- **`domain`**: Use cases, models, and repository interfaces.
+- **`data`**: Data sources, repositories, and mappers.
 
-Contributions are welcome. Please adhere to this project's `code of conduct`.
+### Contributing
 
-## License
+Contributions are welcome! Please follow these steps:
 
-Distributed under the MIT License. See `LICENSE` for more information.
+1. **Fork the repository**.
+2. **Create a new branch** for your feature or bugfix.
+3. **Commit your changes**.
+4. **Push to your branch**.
+5. **Create a pull request**.
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### Contact
+
+For any inquiries, please reach out to [Phuoc Bui](https://github.com/huuphuoc1396).
