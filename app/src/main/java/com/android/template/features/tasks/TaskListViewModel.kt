@@ -7,7 +7,6 @@ import com.android.template.domain.usecases.preferences.SetFirstRunUseCase
 import com.android.template.domain.usecases.tasks.CreateTaskUseCase
 import com.android.template.domain.usecases.tasks.GetTaskListUseCase
 import com.android.template.domain.utils.orTrue
-import com.android.template.extenstions.errors.toErrorState
 import com.android.template.features.tasks.models.TaskListEvent
 import com.android.template.features.tasks.models.TaskListUiState
 import com.android.template.providers.dispatchers.DispatcherProvider
@@ -43,7 +42,7 @@ internal class TaskListViewModel @Inject constructor(
         getTaskListUseCase().collectSafe(
             context = dispatcherProvider.io,
             hasLoading = true,
-            onError = { throwable -> showError(throwable.toErrorState()) },
+            onError = ::showError,
         ) { tasks ->
             updateUiState { copy(tasks = tasks) }
         }
@@ -53,7 +52,7 @@ internal class TaskListViewModel @Inject constructor(
         launchSafe(
             context = dispatcherProvider.io,
             hasLoading = true,
-            onError = { throwable -> showError(throwable.toErrorState()) },
+            onError = ::showError,
         ) {
             val createdTask = createTaskUseCase(Task())
             updateUiState { copy(tasks = tasks + createdTask) }

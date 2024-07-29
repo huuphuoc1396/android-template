@@ -1,7 +1,7 @@
 package com.android.template.compose.uistate.models
 
 data class ErrorState(
-    val message: String? = null,
+    val throwable: Throwable? = null,
 ) {
-    fun hasError() = message != null
+    fun hasError() = throwable != null
 }

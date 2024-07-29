@@ -10,11 +10,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.android.template.compose.components.error.ErrorDialog
 import com.android.template.compose.components.loading.Loading
+import com.android.template.compose.uistate.mappers.toReadableMessage
 import com.android.template.compose.uistate.viewmodel.UiStateViewModel
 
 @Composable
@@ -25,6 +27,7 @@ fun <UiState, Event> UiStateScreen(
     onEvent: (Event) -> Unit = {},
     content: @Composable (uiState: UiState) -> Unit,
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val error by viewModel.error.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -39,7 +42,7 @@ fun <UiState, Event> UiStateScreen(
         )
         if (error.hasError()) {
             ErrorDialog(
-                message = error.message.orEmpty(),
+                message = error.throwable.toReadableMessage(context),
                 onDismiss = viewModel::hideError,
             )
         }

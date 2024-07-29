@@ -3,12 +3,13 @@ package com.android.template.data.repositories.preferences
 import app.cash.turbine.test
 import com.android.template.data.storages.datastore.preferences.PreferencesDataStore
 import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 internal class PreferencesRepositoryImplTest {
 
@@ -49,6 +50,7 @@ internal class PreferencesRepositoryImplTest {
     fun `setFirstRun is true`() = runTest {
         // Given
         val isFirstRun = true
+        coEvery { preferencesDataStore.setFirstRun(isFirstRun) } returns Unit
 
         // When
         repository.setFirstRun(isFirstRun)
@@ -61,6 +63,7 @@ internal class PreferencesRepositoryImplTest {
     fun `setFirstRun is false`() = runTest {
         // Given
         val isFirstRun = false
+        coEvery { preferencesDataStore.setFirstRun(isFirstRun) } returns Unit
 
         // When
         repository.setFirstRun(isFirstRun)

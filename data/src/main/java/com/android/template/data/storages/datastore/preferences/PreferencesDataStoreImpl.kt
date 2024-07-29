@@ -23,7 +23,6 @@ internal class PreferencesDataStoreImpl @Inject constructor(
     }
 
     companion object {
-
         private val KEY_IS_FIRST = booleanPreferencesKey("is_first")
     }
 }

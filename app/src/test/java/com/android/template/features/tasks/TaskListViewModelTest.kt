@@ -2,6 +2,7 @@ package com.android.template.features.tasks
 
 import app.cash.turbine.test
 import com.android.template.compose.uistate.models.ErrorState
+import com.android.template.domain.models.errors.NoConnectionException
 import com.android.template.domain.models.tasks.Task
 import com.android.template.domain.usecases.preferences.IsFirstRunUseCase
 import com.android.template.domain.usecases.preferences.SetFirstRunUseCase
@@ -69,7 +70,7 @@ internal class TaskListViewModelTest {
     @Test
     fun `getTaskList is fail`() = runTest {
         // Given
-        val error = RuntimeException("Error")
+        val error = NoConnectionException()
         every { getTaskListUseCase() } returns flow { throw error }
 
         // When
@@ -78,7 +79,7 @@ internal class TaskListViewModelTest {
 
         // Then
         taskListViewModel.error.test {
-            expectMostRecentItem() shouldBe ErrorState(message = error.localizedMessage)
+            expectMostRecentItem() shouldBe ErrorState(error)
         }
     }
 
@@ -108,7 +109,7 @@ internal class TaskListViewModelTest {
         // Given
         val tasks = giveTaskList()
 
-        val error = RuntimeException("Error")
+        val error = NoConnectionException()
         val newTask = Task()
         coEvery { createTaskUseCase(newTask) } throws error
 
@@ -124,7 +125,7 @@ internal class TaskListViewModelTest {
             expectMostRecentItem() shouldBe TaskListUiState(tasks = tasks)
         }
         taskListViewModel.error.test {
-            expectMostRecentItem() shouldBe ErrorState(message = "Error")
+            expectMostRecentItem() shouldBe ErrorState(error)
         }
     }
 

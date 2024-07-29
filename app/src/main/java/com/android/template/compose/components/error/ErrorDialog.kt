@@ -20,7 +20,7 @@ fun ErrorDialog(
         modifier = modifier,
         confirmButton = { TextButton(onClick = onDismiss) { Text(text = stringResource(id = R.string.ok)) } },
         title = { Text(text = stringResource(id = R.string.error_title)) },
-        text = { Text(text = message.ifEmpty { stringResource(id = R.string.unknown_error_message) }) },
+        text = { Text(text = message) },
     )
 }
 
