@@ -7,16 +7,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.android.template.compose.components.error.ErrorDialog
 import com.android.template.compose.components.loading.Loading
-import com.android.template.compose.uistate.mappers.toReadableMessage
+import com.android.template.compose.uistate.mappers.toString
 import com.android.template.compose.uistate.viewmodel.UiStateViewModel
 
 @Composable
@@ -28,9 +28,9 @@ fun <UiState, Event> UiStateScreen(
     content: @Composable (uiState: UiState) -> Unit,
 ) {
     val context = LocalContext.current
-    val uiState by viewModel.uiState.collectAsState()
-    val error by viewModel.error.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val error by viewModel.error.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
     Box(modifier = Modifier.fillMaxSize()) {
         content(uiState)
@@ -42,7 +42,7 @@ fun <UiState, Event> UiStateScreen(
         )
         if (error.hasError()) {
             ErrorDialog(
-                message = error.throwable.toReadableMessage(context),
+                message = error.toString(context),
                 onDismiss = viewModel::hideError,
             )
         }

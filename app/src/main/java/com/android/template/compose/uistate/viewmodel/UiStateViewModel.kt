@@ -2,6 +2,7 @@ package com.android.template.compose.uistate.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.template.compose.uistate.mappers.toErrorState
 import com.android.template.compose.uistate.models.ErrorState
 import com.android.template.extenstions.viewmodel.launch
 import kotlinx.coroutines.Job
@@ -16,18 +17,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-abstract class UiStateViewModel<UiState, Event>(
-    initialUiState: UiState,
-    private val mutexUiState: Mutex = Mutex(),
-    private val mutexError: Mutex = Mutex(),
-    private val mutexLoading: Mutex = Mutex(),
-) : ViewModel() {
+abstract class UiStateViewModel<UiState, Event>(initialUiState: UiState) : ViewModel() {
 
     private val _uiState = MutableStateFlow(initialUiState)
     val uiState: StateFlow<UiState>
@@ -48,23 +43,23 @@ abstract class UiStateViewModel<UiState, Event>(
     open fun getUiState(): UiState = _uiState.value
 
     open fun updateUiState(update: UiState.() -> UiState) {
-        launch { mutexUiState.withLock { _uiState.emit(_uiState.value.update()) } }
+        _uiState.update { it.update() }
     }
 
     open fun showError(throwable: Throwable) {
-        launch { mutexError.withLock { _error.emit(ErrorState(throwable)) } }
+        _error.update { throwable.toErrorState() }
     }
 
     open fun hideError() {
-        launch { mutexError.withLock { _error.emit(ErrorState()) } }
+        _error.update { ErrorState() }
     }
 
     open fun showLoading() {
-        launch { mutexLoading.withLock { _isLoading.emit(true) } }
+        _isLoading.update { true }
     }
 
     open fun hideLoading() {
-        launch { mutexLoading.withLock { _isLoading.emit(false) } }
+        _isLoading.update { false }
     }
 
     open fun sendEvent(event: Event) {
