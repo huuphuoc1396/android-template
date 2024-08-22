@@ -1,7 +1,11 @@
 package com.android.template.compose.uistate.models
 
+import androidx.annotation.StringRes
+
 data class ErrorState(
-    val throwable: Throwable? = null,
+    val message: String = "",
+    @StringRes
+    val messageRes: Int = -1,
 ) {
-    fun hasError() = throwable != null
+    fun hasError() = message.isNotEmpty() || messageRes != -1
 }
