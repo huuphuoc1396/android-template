@@ -1,4 +1,4 @@
-package com.android.template.data.storages.di
+package com.android.template.data.di.modules
 
 import com.android.template.data.storages.datastore.preferences.PreferencesDataStore
 import com.android.template.data.storages.datastore.preferences.PreferencesDataStoreImpl

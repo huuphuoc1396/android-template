@@ -1,4 +1,4 @@
-package com.android.template.providers.dispatchers.di
+package com.android.template.di.modules
 
 import com.android.template.providers.dispatchers.DispatcherProvider
 import com.android.template.providers.dispatchers.DispatcherProviderImpl

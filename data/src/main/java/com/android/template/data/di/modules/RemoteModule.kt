@@ -1,4 +1,4 @@
-package com.android.template.data.remote.di
+package com.android.template.data.di.modules
 
 import com.android.template.data.BuildConfig
 import com.android.template.data.remote.adapters.errors.ErrorHandlingCallAdapterFactory

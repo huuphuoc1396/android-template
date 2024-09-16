@@ -3,7 +3,7 @@ package com.android.template.features.taskdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import app.cash.turbine.test
-import com.android.template.compose.uistate.models.ErrorState
+import com.android.template.compose.uistate.mappers.toErrorState
 import com.android.template.domain.models.errors.NoConnectionException
 import com.android.template.domain.models.tasks.Task
 import com.android.template.domain.usecases.tasks.GetTaskUseCase
@@ -74,6 +74,7 @@ internal class TaskDetailViewModelTest {
     fun `getTask is fail`() = runTest {
         // Given
         val error = NoConnectionException()
+        val errorState = error.toErrorState()
         every { getTaskUseCase("1") } returns flow { throw error }
         every {
             savedStateHandle.toRoute<TaskDetailDestination>()
@@ -85,7 +86,7 @@ internal class TaskDetailViewModelTest {
 
         // Then
         taskDetailViewModel.error.test {
-            expectMostRecentItem() shouldBe ErrorState(error)
+            expectMostRecentItem() shouldBe errorState
         }
     }
 

@@ -1,4 +1,4 @@
-package com.android.template.data.repositories.di
+package com.android.template.data.di.modules
 
 import com.android.template.data.repositories.preferences.PreferencesRepositoryImpl
 import com.android.template.data.repositories.tasks.TasksRepositoryImpl
