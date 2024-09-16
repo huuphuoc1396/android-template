@@ -11,6 +11,7 @@ import com.android.template.features.tasks.models.TaskListEvent
 import com.android.template.features.tasks.models.TaskListUiState
 import com.android.template.providers.dispatchers.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
@@ -44,7 +45,7 @@ internal class TaskListViewModel @Inject constructor(
             hasLoading = true,
             onError = ::showError,
         ) { tasks ->
-            updateUiState { copy(tasks = tasks) }
+            updateUiState { copy(tasks = tasks.toPersistentList()) }
         }
     }
 
@@ -55,7 +56,8 @@ internal class TaskListViewModel @Inject constructor(
             onError = ::showError,
         ) {
             val createdTask = createTaskUseCase(Task())
-            updateUiState { copy(tasks = tasks + createdTask) }
+            val tasks = getUiState().tasks.toMutableList() + createdTask
+            updateUiState { copy(tasks = tasks.toPersistentList()) }
         }
     }
 
