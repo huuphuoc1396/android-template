@@ -2,28 +2,28 @@
 compileSdk = "34"
 minSdk = "28"
 targetSdk = "34"
-agp = "8.5.1"
-kotlin = "1.9.24"
+agp = "8.5.2"
+kotlin = "2.0.0"
 kotlinCoroutines = "1.8.1"
-kotlinSerialization = "1.6.3"
+kotlinSerialization = "1.7.2"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.3"
-activityCompose = "1.9.0"
-composeBom = "2024.06.00"
-navigationCompose = "2.8.0-beta05"
-hilt = "2.49"
+lifecycleRuntimeKtx = "2.8.5"
+activityCompose = "1.9.2"
+composeBom = "2024.09.01"
+navigationCompose = "2.8.0"
+hilt = "2.51.1"
 hiltNavigationCompose = "1.2.0"
 room = "2.6.1"
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 gson = "2.10.1"
 securityCryptoDatastore = "1.0.0"
 mockk = "1.12.1"
 kotest = "5.0.0"
 turbine = "1.1.0"
-logging-interceptor = "4.11.0"
+logging-interceptor = "4.12.0"
 timber = "5.0.1"
 
 [libraries]
@@ -78,3 +78,4 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-seriazation = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

@@ -1,4 +1,4 @@
-package com.android.template.extenstions.viewmodel
+package com.android.template.utils.extenstions.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

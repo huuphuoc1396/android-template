@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.template.compose.uistate.mappers.toErrorState
 import com.android.template.compose.uistate.models.ErrorState
-import com.android.template.extenstions.viewmodel.launch
+import com.android.template.utils.extenstions.viewmodel.launch
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
